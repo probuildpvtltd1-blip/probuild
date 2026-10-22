@@ -2867,7 +2867,7 @@ h1, h2, h3, h4, h5, h6 {
 .col-probuild {
   background: #eff6ff !important;
   border-left: 2px solid #2563eb !important;
-  border-right: 2px solid #2563eb !important;
+  border-right: none !important;
   text-align: center;
 }
 
@@ -2901,7 +2901,7 @@ h1, h2, h3, h4, h5, h6 {
 .probuild-cell {
   background: #eff6ff !important;
   border-left: 2px solid #2563eb !important;
-  border-right: 2px solid #2563eb !important;
+  border-right: none !important;
   color: #0f172a !important;
   font-weight: 700 !important;
 }
