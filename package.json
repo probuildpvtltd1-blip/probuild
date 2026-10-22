@@ -1,0 +1,11 @@
+{
+  "name": "probuild-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ProBuild - Next-Gen Digital Solutions, Web Platforms & High-ROI Ads",
+  "scripts": {
+    "start": "serve .",
+    "deploy": "vercel",
+    "deploy:prod": "vercel --prod"
+  }
+}
