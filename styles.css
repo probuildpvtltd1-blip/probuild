@@ -3253,6 +3253,20 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--accent-cyan);
 }
 
+.c-multi-phones {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.6rem;
+  margin-top: 0.25rem;
+}
+
+.c-multi-phones .c-sep {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  user-select: none;
+}
+
 .wa-direct-banner {
   background: #f0fdf4;
   border: 1px solid #bbf7d0;
@@ -3495,6 +3509,19 @@ textarea:focus {
 
 .footer-contact-list li a:hover {
   color: #38bdf8 !important;
+}
+
+.footer-phone-group {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+}
+
+.footer-phone-group span {
+  color: #64748b;
+  font-size: 0.75rem;
+  user-select: none;
 }
 
 .footer-contact-list li i {

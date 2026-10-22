@@ -609,7 +609,7 @@ window.handleFormSubmit = function(event) {
     const encodedMsg = encodeURIComponent(
       `Hello ProBuild Team! My name is ${name}. I am looking for: ${service} (Budget: ${budget}). Please share the proposal! ${message ? 'Note: ' + message : ''}`
     );
-    const waUrl = `https://wa.me/919876543210?text=${encodedMsg}`;
+    const waUrl = `https://wa.me/919021321877?text=${encodedMsg}`;
 
     // Show interactive prompt to also send via WhatsApp
     setTimeout(() => {
