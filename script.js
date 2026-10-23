@@ -3,6 +3,13 @@
  * Modern Agency Web Experience
  */
 
+// Prevent unwanted horizontal scroll drift
+window.addEventListener('scroll', () => {
+  if (window.scrollX !== 0) {
+    window.scrollTo(0, window.scrollY);
+  }
+}, { passive: true });
+
 document.addEventListener('DOMContentLoaded', () => {
   initAmbientCanvas();
   initNavbar();
