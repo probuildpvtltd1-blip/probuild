@@ -104,14 +104,22 @@ function initNavbar() {
   const overlay = document.getElementById('drawer-overlay');
   const drawerLinks = document.querySelectorAll('.drawer-link');
 
-  // Sticky navbar scroll shadow
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
+  // Sticky navbar: keep transparent on hero, only add scrolled style after hero is passed
+  const heroSection = document.getElementById('hero');
+  function handleNavbarScroll() {
+    if (!header) return;
+    const heroHeight = heroSection ? heroSection.offsetHeight : 600;
+    // Delay transition until hero section is completely scrolled past
+    const scrollThreshold = Math.max(heroHeight - 90, 200);
+    if (window.scrollY > scrollThreshold) {
       header.classList.add('scrolled');
     } else {
       header.classList.remove('scrolled');
     }
-  });
+  }
+
+  window.addEventListener('scroll', handleNavbarScroll, { passive: true });
+  handleNavbarScroll();
 
   // Mobile Drawer Toggle
   function openDrawer() {
