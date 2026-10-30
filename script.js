@@ -3,13 +3,6 @@
  * Modern Agency Web Experience
  */
 
-// Prevent unwanted horizontal scroll drift
-window.addEventListener('scroll', () => {
-  if (window.scrollX !== 0) {
-    window.scrollTo(0, window.scrollY);
-  }
-}, { passive: true });
-
 document.addEventListener('DOMContentLoaded', () => {
   initAmbientCanvas();
   initNavbar();
@@ -104,22 +97,14 @@ function initNavbar() {
   const overlay = document.getElementById('drawer-overlay');
   const drawerLinks = document.querySelectorAll('.drawer-link');
 
-  // Sticky navbar: keep transparent on hero, only add scrolled style after hero is passed
-  const heroSection = document.getElementById('hero');
-  function handleNavbarScroll() {
-    if (!header) return;
-    const heroHeight = heroSection ? heroSection.offsetHeight : 600;
-    // Delay transition until hero section is completely scrolled past
-    const scrollThreshold = Math.max(heroHeight - 90, 200);
-    if (window.scrollY > scrollThreshold) {
+  // Sticky navbar scroll shadow
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) {
       header.classList.add('scrolled');
     } else {
       header.classList.remove('scrolled');
     }
-  }
-
-  window.addEventListener('scroll', handleNavbarScroll, { passive: true });
-  handleNavbarScroll();
+  });
 
   // Mobile Drawer Toggle
   function openDrawer() {
@@ -598,59 +583,41 @@ window.openProposalModal = function() {
 window.handleFormSubmit = function(event) {
   event.preventDefault();
 
-  const name = document.getElementById('client-name').value.trim();
-  const phone = document.getElementById('client-phone').value.trim();
-  const email = document.getElementById('client-email').value.trim();
+  const name = document.getElementById('client-name').value;
+  const phone = document.getElementById('client-phone').value;
+  const email = document.getElementById('client-email').value;
   const service = document.getElementById('service-required').value;
   const budget = document.getElementById('client-budget').value;
-  const message = document.getElementById('client-message').value.trim();
+  const message = document.getElementById('client-message').value;
 
   const submitBtn = document.getElementById('submit-btn');
   const originalText = submitBtn.innerHTML;
 
   submitBtn.disabled = true;
-  submitBtn.innerHTML = `<i class="fa-brands fa-whatsapp fa-bounce"></i> Opening WhatsApp...`;
+  submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Preparing Your Strategy Plan...`;
 
-  // Structured inquiry message with all client details
-  const waLines = [
-    `*⚡ NEW STRATEGY INQUIRY — PROBUILD DIGITAL*`,
-    ``,
-    `👤 *Client / Brand:* ${name}`,
-    `📞 *Phone / WhatsApp:* ${phone}`,
-    `📧 *Email:* ${email}`,
-    `🎯 *Service Required:* ${service}`,
-    `💰 *Budget Range:* ${budget}`,
-    `📝 *Business Details:* ${message || 'N/A'}`
-  ];
-  const encodedMsg = encodeURIComponent(waLines.join('\n'));
-  const waUrl = `https://wa.me/919021321877?text=${encodedMsg}`;
-
-  // Save safety backup copy in browser localStorage
-  try {
-    const leads = JSON.parse(localStorage.getItem('probuild_leads') || '[]');
-    leads.push({ name, phone, email, service, budget, message, time: new Date().toLocaleString() });
-    localStorage.setItem('probuild_leads', JSON.stringify(leads));
-  } catch (err) {
-    /* ignore storage errors */
-  }
-
-  showToast(`🚀 Connecting directly to ProBuild WhatsApp with your plan, ${name}!`);
-
-  // Direct Auto-Open to WhatsApp without prompt
   setTimeout(() => {
-    const newTab = window.open(waUrl, '_blank');
-    if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
-      window.location.href = waUrl;
-    }
-
     submitBtn.disabled = false;
-    submitBtn.innerHTML = `<i class="fa-solid fa-check"></i> Redirected to WhatsApp!`;
+    submitBtn.innerHTML = originalText;
+
+    showToast(`🎉 Success! Proposal sent for ${name}. Our lead architect will contact you on WhatsApp!`);
+
+    // Reset Form
     document.getElementById('probuild-contact-form').reset();
 
+    // Prepare WhatsApp Message Link to prompt user
+    const encodedMsg = encodeURIComponent(
+      `Hello ProBuild Team! My name is ${name}. I am looking for: ${service} (Budget: ${budget}). Please share the proposal! ${message ? 'Note: ' + message : ''}`
+    );
+    const waUrl = `https://wa.me/919021321877?text=${encodedMsg}`;
+
+    // Show interactive prompt to also send via WhatsApp
     setTimeout(() => {
-      submitBtn.innerHTML = originalText;
-    }, 4000);
-  }, 450);
+      if (confirm(`Would you also like to open this inquiry directly on WhatsApp for an instant 5-minute reply?`)) {
+        window.open(waUrl, '_blank');
+      }
+    }, 600);
+  }, 1200);
 };
 
 function showToast(message) {
